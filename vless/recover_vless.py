@@ -3,6 +3,7 @@ import json
 import subprocess
 import requests
 
+
 def send_telegram_message(token, chat_id, message):
     telegram_url = f"https://api.telegram.org/bot{token}/sendMessage"
     telegram_payload = {
@@ -19,6 +20,7 @@ def send_telegram_message(token, chat_id, message):
         print("发送 Telegram 消息失败")
     else:
         print("发送 Telegram 消息成功")
+
 
 # 从环境变量中获取密钥
 accounts_json = os.getenv('ACCOUNTS_JSON')
@@ -61,5 +63,5 @@ for server in servers:
 
 # 发送汇总消息到 Telegram
 if not success_flag:
-    send_telegram_message(telegram_token, telegram_chat_id, summary_message)
     print(summary_message)
+    send_telegram_message(telegram_token, telegram_chat_id, summary_message)

@@ -39,7 +39,7 @@ summary_message = "serv00-vless 恢复操作结果：\n"
 
 # 默认恢复命令
 default_restore_command = "source ~/.profile && cd ~/domains/$USER.serv00.net/vless && ./check_vless.sh"
-
+success_flag = True
 # 遍历服务器列表并执行恢复操作
 for server in servers:
     host = server['host']
@@ -57,6 +57,8 @@ for server in servers:
         summary_message += f"\n成功恢复 {host} 上的 vless 服务：\n{output.decode('utf-8')}"
     except subprocess.CalledProcessError as e:
         summary_message += f"\n无法恢复 {host} 上的 vless 服务：\n{e.output.decode('utf-8')}"
+        success_flag = False
 
 # 发送汇总消息到 Telegram
-send_telegram_message(telegram_token, telegram_chat_id, summary_message)
+if not success_flag:
+    send_telegram_message(telegram_token, telegram_chat_id, summary_message)
